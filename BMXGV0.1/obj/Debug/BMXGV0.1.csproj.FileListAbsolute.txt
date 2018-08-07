@@ -1,1 +1,9 @@
 D:\Document\Demo\BMXGV0.1\BMXGV0.1\bin\Debug\BMXGV0.1.exe.config
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\bin\Debug\BMXGV0.1.exe
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\bin\Debug\BMXGV0.1.pdb
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0.1.csprojResolveAssemblyReference.cache
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0._1.F_Main.resources
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0._1.Properties.Resources.resources
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0.1.csproj.GenerateResource.Cache
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0.1.exe
+D:\Document\Demo\BMXGV0.1\BMXGV0.1\obj\Debug\BMXGV0.1.pdb

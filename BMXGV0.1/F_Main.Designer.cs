@@ -232,6 +232,7 @@
             this.PIN1.TabIndex = 17;
             this.PIN1.Text = "通道1";
             this.PIN1.UseVisualStyleBackColor = true;
+            this.PIN1.Click += new System.EventHandler(this.PIN1_Click);
             // 
             // PIN2
             // 
@@ -242,6 +243,7 @@
             this.PIN2.TabIndex = 18;
             this.PIN2.Text = "通道2";
             this.PIN2.UseVisualStyleBackColor = true;
+            this.PIN2.Click += new System.EventHandler(this.PIN2_Click);
             // 
             // PIN3
             // 
@@ -252,6 +254,7 @@
             this.PIN3.TabIndex = 19;
             this.PIN3.Text = "通道3";
             this.PIN3.UseVisualStyleBackColor = true;
+            this.PIN3.Click += new System.EventHandler(this.PIN3_Click);
             // 
             // PIN4
             // 
@@ -262,6 +265,7 @@
             this.PIN4.TabIndex = 20;
             this.PIN4.Text = "通道4";
             this.PIN4.UseVisualStyleBackColor = true;
+            this.PIN4.Click += new System.EventHandler(this.PIN4_Click);
             // 
             // groupBox2
             // 

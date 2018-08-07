@@ -209,15 +209,141 @@ namespace BMXGV0._1
 
                     }
                     #endregion
+
+                    #region
+                    if (buffer[8] == 0x08)
+                    {
+                        Chnum = buffer[10].ToString();
+                        if (buffer[9] == 0x00)
+                        {
+                           
+                            MessageBox.Show("通道："+Chnum+"写入成功!");
+                        }
+                        if (buffer[9] == 0x01)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",下发通道错误（超出范围/或与最近搜索通道不符）");
+                            return;
+                        }
+                        if (buffer[9] == 0x02)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",接收的下行帧CRC错误");
+                            return;
+                        }
+                        if (buffer[9] == 0x03)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",下发ROMID为非法传感器");
+                            return;
+                        }
+                        if (buffer[9] == 0x04)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",下发ROMID CRC错误");
+                            return;
+                        }
+                        if (buffer[9] == 0x05)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",连接有非法传感器（不能操作）");
+                            return;
+                        }
+                        if (buffer[9] == 0x06)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",接收到错误读/写类型");
+                            return;
+                        }
+                        if (buffer[9] == 0x07)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",未搜索就进行读/写操作");
+                            return;
+                        }
+                        if (buffer[9] == 0x08)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",写入失败");
+                            return;
+                        }
+                    }
+
+                    #endregion
                 }
                 catch
                 {
 
                 }
+                #endregion
             }
         }
 
+        private void PIN1_Click(object sender, EventArgs e)
+        {
+            MyClass.Myclass Myclass = new MyClass.Myclass();
+            byte[] COM1 = new byte[13];
+            COM1[0] = 0x5f;COM1[1] = 0x5f;COM1[2] = 0x00;COM1[3] = 0x01;COM1[4] = 0x10;COM1[5] = 0x01;COM1[6] = 0x00;COM1[7] = 0x00;COM1[8] = 0x03;COM1[9] = 0x01;
+            byte[] crc = new byte[11];
+            byte[] crcreturn = new byte[2];
+            for (int i = 2, j = 0; i < 10; i++, j++)
+            {
+                crc[j] = COM1[i];
+            }
+            crcreturn = Myclass.CRC16(crc, crc.Length);
+            COM1[10] = crcreturn[0];
+            COM1[11] = crcreturn[1];
+            COM1[12] = 0xAA;
+            COM1[13] = 0x55;
+        }
 
+        private void PIN2_Click(object sender, EventArgs e)
+        {
+
+            MyClass.Myclass Myclass = new MyClass.Myclass();
+            byte[] COM1 = new byte[13];
+            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x01; COM1[4] = 0x10; COM1[5] = 0x01; COM1[6] = 0x00; COM1[7] = 0x00; COM1[8] = 0x03; COM1[9] = 0x02;
+            byte[] crc = new byte[11];
+            byte[] crcreturn = new byte[2];
+            for (int i = 2, j = 0; i < 10; i++, j++)
+            {
+                crc[j] = COM1[i];
+            }
+            crcreturn = Myclass.CRC16(crc, crc.Length);
+            COM1[10] = crcreturn[0];
+            COM1[11] = crcreturn[1];
+            COM1[12] = 0xAA;
+            COM1[13] = 0x55;
+        }
+
+        private void PIN3_Click(object sender, EventArgs e)
+        {
+
+            MyClass.Myclass Myclass = new MyClass.Myclass();
+            byte[] COM1 = new byte[13];
+            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x01; COM1[4] = 0x10; COM1[5] = 0x01; COM1[6] = 0x00; COM1[7] = 0x00; COM1[8] = 0x03; COM1[9] = 0x03;
+            byte[] crc = new byte[11];
+            byte[] crcreturn = new byte[2];
+            for (int i = 2, j = 0; i < 10; i++, j++)
+            {
+                crc[j] = COM1[i];
+            }
+            crcreturn = Myclass.CRC16(crc, crc.Length);
+            COM1[10] = crcreturn[0];
+            COM1[11] = crcreturn[1];
+            COM1[12] = 0xAA;
+            COM1[13] = 0x55;
+        }
+
+        private void PIN4_Click(object sender, EventArgs e)
+        {
+
+            MyClass.Myclass Myclass = new MyClass.Myclass();
+            byte[] COM1 = new byte[13];
+            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x01; COM1[4] = 0x10; COM1[5] = 0x01; COM1[6] = 0x00; COM1[7] = 0x00; COM1[8] = 0x03; COM1[9] = 0x04;
+            byte[] crc = new byte[11];
+            byte[] crcreturn = new byte[2];
+            for (int i = 2, j = 0; i < 10; i++, j++)
+            {
+                crc[j] = COM1[i];
+            }
+            crcreturn = Myclass.CRC16(crc, crc.Length);
+            COM1[10] = crcreturn[0];
+            COM1[11] = crcreturn[1];
+            COM1[12] = 0xAA;
+            COM1[13] = 0x55;
+        }
     }
 }
-#endregion
