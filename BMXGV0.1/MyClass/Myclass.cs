@@ -248,11 +248,11 @@ namespace BMXGV0._1.MyClass
 
             byte[] IC_Information_data = new byte[serfNum];
 
-            buffer.CopyTo(22, IC_Information_data, 0, serfNum);
+            buffer.CopyTo(24, IC_Information_data, 0, serfNum);
 
             for (int i = 0, j = 0; i < IC_Information_data.Length; i += 14, j++)
             {
-                ROMID[j] = buffer[i].ToString() + buffer[i + 1].ToString() + buffer[i + 2].ToString() + buffer[i + 3].ToString() + buffer[i + 4].ToString() + buffer[i + 5].ToString() + buffer[i + 6].ToString() + buffer[i + 7].ToString();
+                ROMID[j] = Convert.ToString(IC_Information_data[i],16) + Convert.ToString(IC_Information_data[i+1], 16) + Convert.ToString(IC_Information_data[i+2], 16) + Convert.ToString(IC_Information_data[i+3], 16) + Convert.ToString(IC_Information_data[i+4], 16) + Convert.ToString(IC_Information_data[i+5], 16) + Convert.ToString(IC_Information_data[i+6], 16) + Convert.ToString(IC_Information_data[i+7], 16);
             }
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             for (int a = 8, b = 0; a < IC_Information_data.Length; a += 14, b++)
@@ -281,7 +281,7 @@ namespace BMXGV0._1.MyClass
                 LocalNum[b] = Convert.ToInt32(weizhihao, 2).ToString();
 
             }
-            for (int c = 9, d = 0; c < IC_Information_data.Length; c += 14, d++) //温度
+            for (int c = 10, d = 0; c < IC_Information_data.Length; c += 14, d++) //温度
             {
                 if (IC_Information_data[c] == 0x3f && IC_Information_data[c + 1] == 0xff)
                 {
@@ -345,6 +345,7 @@ namespace BMXGV0._1.MyClass
                 DataRow r1 = table.NewRow();
 
                 r1["时间"] = DateTime.Now.ToString();
+                r1["ROMID"] = ROMID[ii];
                 r1["缆号"] = CobleNum[ii];
                 r1["地址"] = LocalNum[ii];
                 r1["温度（℃）"] = Wendu[ii];  
@@ -357,7 +358,71 @@ namespace BMXGV0._1.MyClass
 
 
 
+        #region bit to Byte 
+        public byte[] bitToByteTH (TextBox EENum)
+        {
+            string a = EENum.Text;
+            int b;
+            string c;
+            string d;
+            string f;
+            
+            b = Convert.ToInt16(a);
+            c = Convert.ToString(b, 2);
+            d = "000000";
+            c = c.PadLeft(10, '0');
+            f = c + d;
+            byte[] encodebyte = new byte[f.Length / 8];
+            for (int i = 0; i < f.Length / 8; i++)
+            {
+                encodebyte[i] = Convert.ToByte(f.Substring(i * 8, 8), 2);
+            }
+            return encodebyte;
+        }
 
+        public byte[] bitToByteTL(TextBox EENum)
+        {
+            string a = EENum.Text;
+            int b;
+            string c;
+            string d;
+            string f;
+
+            b = Convert.ToInt16(a);
+            c = Convert.ToString(b, 2);
+            d = c.PadLeft(6,'0');
+            c = "0000000000";
+            f = c + d;
+            byte[] encodebyte = new byte[f.Length / 8];
+            for (int i = 0; i < f.Length / 8; i++)
+            {
+                encodebyte[i] = Convert.ToByte(f.Substring(i * 8, 8), 2);
+            }
+            return encodebyte;
+        }
+        public byte[] bitToByteTHTL(TextBox EENum)
+        {
+            string a = EENum.Text;
+            int b;
+            string c;
+            string d;
+            string f;
+
+            b = Convert.ToInt16(a);
+            c = Convert.ToString(b, 2);
+            d = c.PadLeft(6, '0');
+            c = c.PadLeft(10, '0');
+            f = c + d;
+            byte[] encodebyte = new byte[f.Length / 8];
+            for (int i = 0; i < f.Length / 8; i++)
+            {
+                encodebyte[i] = Convert.ToByte(f.Substring(i * 8, 8), 2);
+            }
+            return encodebyte;
+        }
+
+
+        #endregion
 
 
 

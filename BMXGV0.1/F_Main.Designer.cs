@@ -28,7 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsSpNum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsBaudRate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsDataBits = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsStopBits = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsParity = new System.Windows.Forms.ToolStripStatusLabel();
             this.Connect = new System.Windows.Forms.Button();
             this.cbSerial = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -49,14 +56,32 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtReceive = new System.Windows.Forms.RichTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ReadPIN2 = new System.Windows.Forms.Button();
+            this.ReadPIN4 = new System.Windows.Forms.Button();
+            this.ReadPIN1 = new System.Windows.Forms.Button();
+            this.ReadPIN3 = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DownMode = new System.Windows.Forms.ComboBox();
+            this.EENum = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.WritePIN2 = new System.Windows.Forms.Button();
+            this.WritePIN4 = new System.Windows.Forms.Button();
+            this.WritePIN1 = new System.Windows.Forms.Button();
+            this.WritePIN3 = new System.Windows.Forms.Button();
+            this.tmSend = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.statusStrip1);
             this.groupBox1.Controls.Add(this.Connect);
             this.groupBox1.Controls.Add(this.cbSerial);
             this.groupBox1.Controls.Add(this.groupBox3);
@@ -70,6 +95,50 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "串口配置";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsSpNum,
+            this.tsBaudRate,
+            this.tsDataBits,
+            this.tsStopBits,
+            this.tsParity});
+            this.statusStrip1.Location = new System.Drawing.Point(3, 148);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(467, 22);
+            this.statusStrip1.TabIndex = 39;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tsSpNum
+            // 
+            this.tsSpNum.Name = "tsSpNum";
+            this.tsSpNum.Size = new System.Drawing.Size(95, 17);
+            this.tsSpNum.Text = "串口号：未指定|";
+            // 
+            // tsBaudRate
+            // 
+            this.tsBaudRate.Name = "tsBaudRate";
+            this.tsBaudRate.Size = new System.Drawing.Size(86, 17);
+            this.tsBaudRate.Text = "波特率:未指定|";
+            // 
+            // tsDataBits
+            // 
+            this.tsDataBits.Name = "tsDataBits";
+            this.tsDataBits.Size = new System.Drawing.Size(86, 17);
+            this.tsDataBits.Text = "数据位:未指定|";
+            // 
+            // tsStopBits
+            // 
+            this.tsStopBits.Name = "tsStopBits";
+            this.tsStopBits.Size = new System.Drawing.Size(86, 17);
+            this.tsStopBits.Text = "停止位:未指定|";
+            // 
+            // tsParity
+            // 
+            this.tsParity.Name = "tsParity";
+            this.tsParity.Size = new System.Drawing.Size(86, 17);
+            this.tsParity.Text = "停止位:未指定|";
+            // 
             // Connect
             // 
             this.Connect.Font = new System.Drawing.Font("宋体", 12F);
@@ -79,6 +148,7 @@
             this.Connect.TabIndex = 22;
             this.Connect.Text = "连接";
             this.Connect.UseVisualStyleBackColor = true;
+            this.Connect.Click += new System.EventHandler(this.Connect_Click);
             // 
             // cbSerial
             // 
@@ -213,6 +283,7 @@
             this.btnSwitch.TabIndex = 2;
             this.btnSwitch.Text = "打开串口";
             this.btnSwitch.UseVisualStyleBackColor = true;
+            this.btnSwitch.Click += new System.EventHandler(this.btnSwitch_Click);
             // 
             // label1
             // 
@@ -283,7 +354,7 @@
             // 
             // txtReceive
             // 
-            this.txtReceive.Location = new System.Drawing.Point(551, 331);
+            this.txtReceive.Location = new System.Drawing.Point(551, 619);
             this.txtReceive.Name = "txtReceive";
             this.txtReceive.Size = new System.Drawing.Size(588, 173);
             this.txtReceive.TabIndex = 22;
@@ -299,27 +370,187 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(588, 258);
+            this.dataGridView1.Size = new System.Drawing.Size(588, 546);
             this.dataGridView1.TabIndex = 23;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.ReadPIN2);
+            this.groupBox4.Controls.Add(this.ReadPIN4);
+            this.groupBox4.Controls.Add(this.ReadPIN1);
+            this.groupBox4.Controls.Add(this.ReadPIN3);
+            this.groupBox4.Font = new System.Drawing.Font("宋体", 13F);
+            this.groupBox4.Location = new System.Drawing.Point(13, 331);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(473, 116);
+            this.groupBox4.TabIndex = 24;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "读取";
+            // 
+            // ReadPIN2
+            // 
+            this.ReadPIN2.Font = new System.Drawing.Font("宋体", 9F);
+            this.ReadPIN2.Location = new System.Drawing.Point(122, 39);
+            this.ReadPIN2.Name = "ReadPIN2";
+            this.ReadPIN2.Size = new System.Drawing.Size(113, 38);
+            this.ReadPIN2.TabIndex = 22;
+            this.ReadPIN2.Text = "通道2";
+            this.ReadPIN2.UseVisualStyleBackColor = true;
+            this.ReadPIN2.Click += new System.EventHandler(this.ReadPIN2_Click);
+            // 
+            // ReadPIN4
+            // 
+            this.ReadPIN4.Font = new System.Drawing.Font("宋体", 9F);
+            this.ReadPIN4.Location = new System.Drawing.Point(353, 39);
+            this.ReadPIN4.Name = "ReadPIN4";
+            this.ReadPIN4.Size = new System.Drawing.Size(113, 38);
+            this.ReadPIN4.TabIndex = 24;
+            this.ReadPIN4.Text = "通道4";
+            this.ReadPIN4.UseVisualStyleBackColor = true;
+            this.ReadPIN4.Click += new System.EventHandler(this.ReadPIN4_Click);
+            // 
+            // ReadPIN1
+            // 
+            this.ReadPIN1.Font = new System.Drawing.Font("宋体", 9F);
+            this.ReadPIN1.Location = new System.Drawing.Point(6, 39);
+            this.ReadPIN1.Name = "ReadPIN1";
+            this.ReadPIN1.Size = new System.Drawing.Size(113, 38);
+            this.ReadPIN1.TabIndex = 21;
+            this.ReadPIN1.Text = "通道1";
+            this.ReadPIN1.UseVisualStyleBackColor = true;
+            this.ReadPIN1.Click += new System.EventHandler(this.ReadPIN1_Click);
+            // 
+            // ReadPIN3
+            // 
+            this.ReadPIN3.Font = new System.Drawing.Font("宋体", 9F);
+            this.ReadPIN3.Location = new System.Drawing.Point(236, 39);
+            this.ReadPIN3.Name = "ReadPIN3";
+            this.ReadPIN3.Size = new System.Drawing.Size(113, 38);
+            this.ReadPIN3.TabIndex = 23;
+            this.ReadPIN3.Text = "通道3";
+            this.ReadPIN3.UseVisualStyleBackColor = true;
+            this.ReadPIN3.Click += new System.EventHandler(this.ReadPIN3_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.DownMode);
+            this.groupBox5.Controls.Add(this.EENum);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.WritePIN2);
+            this.groupBox5.Controls.Add(this.WritePIN4);
+            this.groupBox5.Controls.Add(this.WritePIN1);
+            this.groupBox5.Controls.Add(this.WritePIN3);
+            this.groupBox5.Font = new System.Drawing.Font("宋体", 13F);
+            this.groupBox5.Location = new System.Drawing.Point(12, 464);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(473, 200);
+            this.groupBox5.TabIndex = 25;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "写寄存器";
+            // 
+            // DownMode
+            // 
+            this.DownMode.AutoCompleteCustomSource.AddRange(new string[] {
+            "TH",
+            "TL",
+            "TH及TL"});
+            this.DownMode.FormattingEnabled = true;
+            this.DownMode.Items.AddRange(new object[] {
+            "TH",
+            "TL",
+            "TH及TL"});
+            this.DownMode.Location = new System.Drawing.Point(39, 46);
+            this.DownMode.Name = "DownMode";
+            this.DownMode.Size = new System.Drawing.Size(244, 25);
+            this.DownMode.TabIndex = 78;
+            this.DownMode.Text = "选择要写入的寄存器的模式";
+            // 
+            // EENum
+            // 
+            this.EENum.Location = new System.Drawing.Point(306, 45);
+            this.EENum.Name = "EENum";
+            this.EENum.Size = new System.Drawing.Size(63, 27);
+            this.EENum.TabIndex = 77;
+            this.EENum.Text = "01";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 88);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(134, 18);
+            this.label14.TabIndex = 76;
+            this.label14.Text = "写入寄存器值：";
+            // 
+            // WritePIN2
+            // 
+            this.WritePIN2.Font = new System.Drawing.Font("宋体", 9F);
+            this.WritePIN2.Location = new System.Drawing.Point(122, 127);
+            this.WritePIN2.Name = "WritePIN2";
+            this.WritePIN2.Size = new System.Drawing.Size(113, 38);
+            this.WritePIN2.TabIndex = 22;
+            this.WritePIN2.Text = "通道2";
+            this.WritePIN2.UseVisualStyleBackColor = true;
+            this.WritePIN2.Click += new System.EventHandler(this.WritePIN2_Click);
+            // 
+            // WritePIN4
+            // 
+            this.WritePIN4.Font = new System.Drawing.Font("宋体", 9F);
+            this.WritePIN4.Location = new System.Drawing.Point(353, 127);
+            this.WritePIN4.Name = "WritePIN4";
+            this.WritePIN4.Size = new System.Drawing.Size(113, 38);
+            this.WritePIN4.TabIndex = 24;
+            this.WritePIN4.Text = "通道4";
+            this.WritePIN4.UseVisualStyleBackColor = true;
+            this.WritePIN4.Click += new System.EventHandler(this.WritePIN4_Click);
+            // 
+            // WritePIN1
+            // 
+            this.WritePIN1.Font = new System.Drawing.Font("宋体", 9F);
+            this.WritePIN1.Location = new System.Drawing.Point(6, 127);
+            this.WritePIN1.Name = "WritePIN1";
+            this.WritePIN1.Size = new System.Drawing.Size(113, 38);
+            this.WritePIN1.TabIndex = 21;
+            this.WritePIN1.Text = "通道1";
+            this.WritePIN1.UseVisualStyleBackColor = true;
+            this.WritePIN1.Click += new System.EventHandler(this.WritePIN1_Click);
+            // 
+            // WritePIN3
+            // 
+            this.WritePIN3.Font = new System.Drawing.Font("宋体", 9F);
+            this.WritePIN3.Location = new System.Drawing.Point(236, 127);
+            this.WritePIN3.Name = "WritePIN3";
+            this.WritePIN3.Size = new System.Drawing.Size(113, 38);
+            this.WritePIN3.TabIndex = 23;
+            this.WritePIN3.Text = "通道3";
+            this.WritePIN3.UseVisualStyleBackColor = true;
+            this.WritePIN3.Click += new System.EventHandler(this.WritePIN3_Click);
             // 
             // F_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1193, 591);
+            this.ClientSize = new System.Drawing.Size(1177, 741);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txtReceive);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "F_Main";
-            this.Text = "Form1";
+            this.Text = "北京七芯中创科技有限公司";
             this.Load += new System.EventHandler(this.F_Main_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -347,6 +578,26 @@
         private System.Windows.Forms.Button Connect;
         private System.Windows.Forms.RichTextBox txtReceive;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button ReadPIN2;
+        private System.Windows.Forms.Button ReadPIN4;
+        private System.Windows.Forms.Button ReadPIN1;
+        private System.Windows.Forms.Button ReadPIN3;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ComboBox DownMode;
+        private System.Windows.Forms.TextBox EENum;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button WritePIN2;
+        private System.Windows.Forms.Button WritePIN4;
+        private System.Windows.Forms.Button WritePIN1;
+        private System.Windows.Forms.Button WritePIN3;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel tsSpNum;
+        private System.Windows.Forms.ToolStripStatusLabel tsBaudRate;
+        private System.Windows.Forms.ToolStripStatusLabel tsDataBits;
+        private System.Windows.Forms.ToolStripStatusLabel tsStopBits;
+        private System.Windows.Forms.ToolStripStatusLabel tsParity;
+        private System.Windows.Forms.Timer tmSend;
     }
 }
 
