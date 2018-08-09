@@ -18,12 +18,16 @@ namespace BMXGV0._1
         public F_Main()
         {
             InitializeComponent();
+            
+         
         }
 
 
 
         private void F_Main_Load(object sender, EventArgs e)
         {
+            EENum.Enabled = false;
+            EENum.Enabled = false;
             INIFILE.Profile.LoadProfile(); //加载本地Config文件
             Myclass.DecomSerf(cbBaudRate, cbDataBits, cbStop, cbParity); //GUI COM serf set
             Myclass.COMCHECK(cbSerial); //Get COM
@@ -35,6 +39,7 @@ namespace BMXGV0._1
             Sp1.RtsEnable = true;
             Sp1.ReadTimeout = 100000;
             Sp1.Close();
+         
         }
 
         void Sp1_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -69,18 +74,18 @@ namespace BMXGV0._1
                     Sp1.Read(receivedData, 0, receivedData.Length);
                     buffer.AddRange(receivedData); //buffer those to list
                     Sp1.DiscardInBuffer();
-                    string strrcv = null;
+                    //string strrcv = null;
 
-                    for (int i = 0; i < receivedData.Length; i++)
-                    {
-                        strrcv += receivedData[i].ToString("x2");
-                    }
-                    txtReceive.Text += strrcv + "\r\n";
+                    //for (int i = 0; i < receivedData.Length; i++)
+                    //{
+                    //    strrcv += receivedData[i].ToString("x2");
+                    //}
+                    //txtReceive.Text += strrcv + "\r\n";
 
-                    if (txtReceive.TextLength > 500)
-                    {
-                        txtReceive.Clear();
-                    }
+                    //if (txtReceive.TextLength > 500)
+                    //{
+                    //    txtReceive.Clear();
+                    //}
                     #endregion
                     int n = buffer.Count;
                     #region Communication Protocol processing
@@ -110,12 +115,12 @@ namespace BMXGV0._1
                     }
                     #endregion
 
-                    #region Channel Attribute 04
+                        #region Channel Attribute 04
                     if (buffer[10] == 0x04)
                     {
                         if (buffer[11] == 0x00)
                         {
-                            Chnum = Convert.ToString(buffer[10], 10);
+                            Chnum = Convert.ToString(buffer[12], 10);
                             if (buffer[17] == 0x00)
                             {
                                 ushort QTNum = 0;
@@ -125,6 +130,7 @@ namespace BMXGV0._1
                                 QTNum = (ushort)(QTNum << 8);
                                 QTNum = (ushort)(QTNum ^ b2);
                                 MessageBox.Show("通道：" + Chnum + "，检查正确，共有QT传感器" + QTNum.ToString() + "颗");
+                                groupBox4.Enabled = true;
                             }
                             if (buffer[17] == 0x01)
                             {
@@ -134,13 +140,12 @@ namespace BMXGV0._1
                                 QTNum = (ushort)(QTNum ^ b1);
                                 QTNum = (ushort)(QTNum << 8);
                                 QTNum = (ushort)(QTNum ^ b2);
-                                MessageBox.Show("通道：" + Chnum + ",检查正确，共有QT传感器" + QTNum.ToString() + "颗");
                                 ushort NQTNum = 0;
                                 byte b3 = buffer[15];
                                 byte b4 = buffer[16];
-                                NQTNum = (ushort)(NQTNum ^ b1);
+                                NQTNum = (ushort)(NQTNum ^ b3);
                                 NQTNum = (ushort)(NQTNum << 8);
-                                NQTNum = (ushort)(NQTNum ^ b2);
+                                NQTNum = (ushort)(NQTNum ^ b4);
                                 MessageBox.Show("通道：" + Chnum + ",有非本公司传感器,共有QT传感器" + QTNum.ToString() + "颗，" + "非QT传感器" + NQTNum.ToString() + "颗");
                             }
                         }
@@ -155,7 +160,7 @@ namespace BMXGV0._1
                     }
                     #endregion
 
-                    #region IC information Confrim 06
+                        #region IC information Confrim 06
                     if (buffer[10] == 0x06)
                     {
                         
@@ -176,6 +181,7 @@ namespace BMXGV0._1
                             {
                                 this.dataGridView1.DataSource = table;
                             }));
+                            groupBox5.Enabled = true;
                         }
                         if (buffer[11] == 0x01)
                         {
@@ -216,7 +222,7 @@ namespace BMXGV0._1
                     }
                     #endregion
 
-                    #region Write IC EE Confrim 08
+                        #region Write IC EE Confrim 08
                     if (buffer[10] == 0x08)
                     {
                         Chnum = buffer[12].ToString();
@@ -265,6 +271,11 @@ namespace BMXGV0._1
                             MessageBox.Show("通道：" + Chnum + ",写入失败");
                             return;
                         }
+                        if (buffer[11] == 0x09)
+                        {
+                            MessageBox.Show("通道：" + Chnum + ",未经读取就写入");
+                            return;
+                        }
                     }
 
                     #endregion
@@ -277,7 +288,7 @@ namespace BMXGV0._1
             }
         }
 
-        #region 0x0003
+                      #region 0x0003
         private void PIN1_Click(object sender, EventArgs e) //0x0003
         {
             MyClass.Myclass Myclass = new MyClass.Myclass();
@@ -285,7 +296,7 @@ namespace BMXGV0._1
 
             COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
             COM1[10] = 0x03; COM1[11] = 0x01;
-            byte[] crc = new byte[11];
+            byte[] crc = new byte[8];
             byte[] crcreturn = new byte[2];
             for (int i = 4, j = 0; i < 12; i++, j++)
             {
@@ -307,7 +318,7 @@ namespace BMXGV0._1
 
             COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
             COM1[10] = 0x03; COM1[11] = 0x02;
-            byte[] crc = new byte[11];
+            byte[] crc = new byte[8];
             byte[] crcreturn = new byte[2];
             for (int i = 4, j = 0; i < 12; i++, j++)
             {
@@ -329,7 +340,7 @@ namespace BMXGV0._1
 
             COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
             COM1[10] = 0x03; COM1[11] = 0x03;
-            byte[] crc = new byte[11];
+            byte[] crc = new byte[8];
             byte[] crcreturn = new byte[2];
             for (int i = 4, j = 0; i < 12; i++, j++)
             {
@@ -351,7 +362,7 @@ namespace BMXGV0._1
 
             COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
             COM1[10] = 0x03; COM1[11] = 0x04;
-            byte[] crc = new byte[11];
+            byte[] crc = new byte[8];
             byte[] crcreturn = new byte[2];
             for (int i = 4, j = 0; i < 12; i++, j++)
             {
@@ -366,7 +377,7 @@ namespace BMXGV0._1
         }
         #endregion
 
-        #region 0x0005
+                      #region 0x0005
         private void ReadPIN1_Click(object sender, EventArgs e) //0x0005
         {
             byte[] COM2 = new byte[25];
@@ -378,16 +389,17 @@ namespace BMXGV0._1
             }
             byte[] crc = new byte[17];
             byte[] crcreturn = new byte[2];
-            for (int i = 2, j = 0; i < 19; i++, j++)
+            for (int i = 4, j = 0; i < 13+8; i++, j++)
             {
                 crc[j] = COM2[i];
             }
             crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM2[21] = crcreturn[0];
-            COM2[22] = crcreturn[1];
+            COM2[21] = crcreturn[1];
+            COM2[22] = crcreturn[0];
             COM2[23] = 0x55;
             COM2[24] = 0xAA;
             Sp1.Write(COM2, 0, COM2.Length);
+            
 
         }
 
@@ -402,13 +414,13 @@ namespace BMXGV0._1
             }
             byte[] crc = new byte[17];
             byte[] crcreturn = new byte[2];
-            for (int i = 2, j = 0; i < 19; i++, j++)
+            for (int i = 4, j = 0; i < 13+8; i++, j++)
             {
                 crc[j] = COM2[i];
             }
             crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM2[21] = crcreturn[0];
-            COM2[22] = crcreturn[1];
+            COM2[21] = crcreturn[1];
+            COM2[22] = crcreturn[0];
             COM2[23] = 0x55;
             COM2[24] = 0xAA;
             Sp1.Write(COM2, 0, COM2.Length);
@@ -425,13 +437,13 @@ namespace BMXGV0._1
             }
             byte[] crc = new byte[17];
             byte[] crcreturn = new byte[2];
-            for (int i = 2, j = 0; i < 19; i++, j++)
+            for (int i = 4, j = 0; i < 13+8; i++, j++)
             {
                 crc[j] = COM2[i];
             }
             crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM2[21] = crcreturn[0];
-            COM2[22] = crcreturn[1];
+            COM2[21] = crcreturn[1];
+            COM2[22] = crcreturn[0];
             COM2[23] = 0x55;
             COM2[24] = 0xAA;
             Sp1.Write(COM2, 0, COM2.Length);
@@ -448,13 +460,13 @@ namespace BMXGV0._1
             }
             byte[] crc = new byte[17];
             byte[] crcreturn = new byte[2];
-            for (int i = 2, j = 0; i < 19; i++, j++)
+            for (int i = 4, j = 0; i < 13+8; i++, j++)
             {
                 crc[j] = COM2[i];
             }
             crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM2[21] = crcreturn[0];
-            COM2[22] = crcreturn[1];
+            COM2[21] = crcreturn[1];
+            COM2[22] = crcreturn[0];
             COM2[23] = 0x55;
             COM2[24] = 0xAA;
             Sp1.Write(COM2, 0, COM2.Length);
@@ -462,13 +474,13 @@ namespace BMXGV0._1
 
         #endregion
 
-        #region 0x0007
+                      #region 0x0007
         private void WritePIN1_Click(object sender, EventArgs e)
         {
             byte[] COM3 = new byte[27];
             byte[] btoB = new byte[2];
             COM3[0] = 0x5f; COM3[1] = 0x5f; COM3[2] = 0x00; COM3[3] = 0x15; COM3[4] = 0x00; COM3[5] = 0x01; COM3[6] = 0x10; COM3[7] = 0x01; COM3[8] = 0x00; COM3[9] = 0x00; COM3[10] = 0x07; COM3[11] = 0x01;
-            if (DownMode.Text == "TH")
+            if (DownMode.Text == "电缆号")
             {
                 COM3[12] = 0x01;
 
@@ -478,17 +490,18 @@ namespace BMXGV0._1
 
 
             }
-            if (DownMode.Text == "TL")
+            if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
                 btoB = Myclass.bitToByteTL(EENum);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
-            if (DownMode.Text == "TH及TL")
+            if (DownMode.Text == "电缆号及位置号")
             {
+               
                 COM3[12] = 0x03;
-                btoB = Myclass.bitToByteTHTL(EENum);
+                btoB = Myclass.bitToByteTHTL(EENum,EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -520,7 +533,7 @@ namespace BMXGV0._1
             byte[] COM3 = new byte[27];
             byte[] btoB = new byte[2];
             COM3[0] = 0x5f; COM3[1] = 0x5f; COM3[2] = 0x00; COM3[3] = 0x15; COM3[4] = 0x00; COM3[5] = 0x01; COM3[6] = 0x10; COM3[7] = 0x01; COM3[8] = 0x00; COM3[9] = 0x00; COM3[10] = 0x07; COM3[11] = 0x02;
-            if (DownMode.Text == "TH")
+            if (DownMode.Text == "电缆号")
             {
                 COM3[12] = 0x01;
 
@@ -530,17 +543,17 @@ namespace BMXGV0._1
 
 
             }
-            if (DownMode.Text == "TL")
+            if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
                 btoB = Myclass.bitToByteTL(EENum);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
-            if (DownMode.Text == "TH及TL")
+            if (DownMode.Text == "电缆号及位置号")
             {
                 COM3[12] = 0x03;
-                btoB = Myclass.bitToByteTHTL(EENum);
+                btoB = Myclass.bitToByteTHTL(EENum,EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -569,7 +582,7 @@ namespace BMXGV0._1
             byte[] COM3 = new byte[27];
             byte[] btoB = new byte[2];
             COM3[0] = 0x5f; COM3[1] = 0x5f; COM3[2] = 0x00; COM3[3] = 0x15; COM3[4] = 0x00; COM3[5] = 0x01; COM3[6] = 0x10; COM3[7] = 0x01; COM3[8] = 0x00; COM3[9] = 0x00; COM3[10] = 0x07; COM3[11] = 0x03;
-            if (DownMode.Text == "TH")
+            if (DownMode.Text == "电缆号")
             {
                 COM3[12] = 0x01;
 
@@ -579,17 +592,17 @@ namespace BMXGV0._1
 
 
             }
-            if (DownMode.Text == "TL")
+            if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
                 btoB = Myclass.bitToByteTL(EENum);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
-            if (DownMode.Text == "TH及TL")
+            if (DownMode.Text == "电缆号及位置号")
             {
                 COM3[12] = 0x03;
-                btoB = Myclass.bitToByteTHTL(EENum);
+                btoB = Myclass.bitToByteTHTL(EENum,EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -636,7 +649,7 @@ namespace BMXGV0._1
             if (DownMode.Text == "TH及TL")
             {
                 COM3[12] = 0x03;
-                btoB = Myclass.bitToByteTHTL(EENum);
+                btoB = Myclass.bitToByteTHTL(EENum,EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -724,6 +737,55 @@ namespace BMXGV0._1
                     MessageBox.Show("Error:" + ex.Message, "Error");
                     tmSend.Enabled = false;
                 }
+            }
+            else
+            {
+                //状态栏设置
+                tsSpNum.Text = "串口号：未指定|";
+                tsBaudRate.Text = "波特率：未指定|";
+                tsDataBits.Text = "数据位：未指定|";
+                tsStopBits.Text = "停止位：未指定|";
+                tsParity.Text = "校验位：未指定|";
+                //恢复控件功能
+                //设置必要控件不可用
+                cbSerial.Enabled = true;
+                cbBaudRate.Enabled = true;
+                cbDataBits.Enabled = true;
+                cbStop.Enabled = true;
+                cbParity.Enabled = true;
+
+                Sp1.Close();                    //关闭串口
+                btnSwitch.Text = "打开串口";
+                tmSend.Enabled = false;         //关闭计时器
+            }
+        }
+
+        private void EENum_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EENum2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DownMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DownMode.SelectedIndex == 0)
+            {
+                EENum.Enabled = true;
+                EENum2.Enabled = false;
+            }
+            if (DownMode.SelectedIndex == 1)
+            {
+                EENum.Enabled = false;
+                EENum2.Enabled = true;
+            }
+            if (DownMode.SelectedIndex == 2)
+            {
+                EENum2.Enabled = true;
+                EENum.Enabled = true;
             }
         }
     }

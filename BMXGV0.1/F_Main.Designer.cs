@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_Main));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsSpNum = new System.Windows.Forms.ToolStripStatusLabel();
@@ -54,7 +55,6 @@
             this.PIN3 = new System.Windows.Forms.Button();
             this.PIN4 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtReceive = new System.Windows.Forms.RichTextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ReadPIN2 = new System.Windows.Forms.Button();
@@ -62,6 +62,9 @@
             this.ReadPIN1 = new System.Windows.Forms.Button();
             this.ReadPIN3 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.EENum2 = new System.Windows.Forms.TextBox();
             this.DownMode = new System.Windows.Forms.ComboBox();
             this.EENum = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -350,27 +353,18 @@
             this.groupBox2.Size = new System.Drawing.Size(473, 116);
             this.groupBox2.TabIndex = 21;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "搜索";
-            // 
-            // txtReceive
-            // 
-            this.txtReceive.Location = new System.Drawing.Point(551, 619);
-            this.txtReceive.Name = "txtReceive";
-            this.txtReceive.Size = new System.Drawing.Size(588, 173);
-            this.txtReceive.TabIndex = 22;
-            this.txtReceive.Text = "";
+            this.groupBox2.Text = "1、搜索";
             // 
             // dataGridView1
             // 
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(551, 67);
+            this.dataGridView1.Location = new System.Drawing.Point(542, 12);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(588, 546);
+            this.dataGridView1.Size = new System.Drawing.Size(597, 652);
             this.dataGridView1.TabIndex = 23;
             // 
             // groupBox4
@@ -379,13 +373,14 @@
             this.groupBox4.Controls.Add(this.ReadPIN4);
             this.groupBox4.Controls.Add(this.ReadPIN1);
             this.groupBox4.Controls.Add(this.ReadPIN3);
+            this.groupBox4.Enabled = false;
             this.groupBox4.Font = new System.Drawing.Font("宋体", 13F);
             this.groupBox4.Location = new System.Drawing.Point(13, 331);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(473, 116);
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "读取";
+            this.groupBox4.Text = "2、读取";
             // 
             // ReadPIN2
             // 
@@ -433,6 +428,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label3);
+            this.groupBox5.Controls.Add(this.label2);
+            this.groupBox5.Controls.Add(this.EENum2);
             this.groupBox5.Controls.Add(this.DownMode);
             this.groupBox5.Controls.Add(this.EENum);
             this.groupBox5.Controls.Add(this.label14);
@@ -440,13 +438,44 @@
             this.groupBox5.Controls.Add(this.WritePIN4);
             this.groupBox5.Controls.Add(this.WritePIN1);
             this.groupBox5.Controls.Add(this.WritePIN3);
+            this.groupBox5.Enabled = false;
             this.groupBox5.Font = new System.Drawing.Font("宋体", 13F);
             this.groupBox5.Location = new System.Drawing.Point(12, 464);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(473, 200);
             this.groupBox5.TabIndex = 25;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "写寄存器";
+            this.groupBox5.Text = "3、传感器编码选项";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("宋体", 9F);
+            this.label3.Location = new System.Drawing.Point(361, 30);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 81;
+            this.label3.Text = "位置号：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 9F);
+            this.label2.Location = new System.Drawing.Point(265, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 80;
+            this.label2.Text = "电缆号：";
+            // 
+            // EENum2
+            // 
+            this.EENum2.Enabled = false;
+            this.EENum2.Location = new System.Drawing.Point(387, 45);
+            this.EENum2.Name = "EENum2";
+            this.EENum2.Size = new System.Drawing.Size(63, 27);
+            this.EENum2.TabIndex = 79;
+            this.EENum2.Text = "01";
+            this.EENum2.TextChanged += new System.EventHandler(this.EENum2_TextChanged);
             // 
             // DownMode
             // 
@@ -456,31 +485,34 @@
             "TH及TL"});
             this.DownMode.FormattingEnabled = true;
             this.DownMode.Items.AddRange(new object[] {
-            "TH",
-            "TL",
-            "TH及TL"});
+            "电缆号",
+            "位置号",
+            "电缆号及位置号"});
             this.DownMode.Location = new System.Drawing.Point(39, 46);
             this.DownMode.Name = "DownMode";
-            this.DownMode.Size = new System.Drawing.Size(244, 25);
+            this.DownMode.Size = new System.Drawing.Size(196, 25);
             this.DownMode.TabIndex = 78;
-            this.DownMode.Text = "选择要写入的寄存器的模式";
+            this.DownMode.Text = "选择要写入的编码选项";
+            this.DownMode.SelectedIndexChanged += new System.EventHandler(this.DownMode_SelectedIndexChanged);
             // 
             // EENum
             // 
-            this.EENum.Location = new System.Drawing.Point(306, 45);
+            this.EENum.Enabled = false;
+            this.EENum.Location = new System.Drawing.Point(286, 45);
             this.EENum.Name = "EENum";
             this.EENum.Size = new System.Drawing.Size(63, 27);
             this.EENum.TabIndex = 77;
             this.EENum.Text = "01";
+            this.EENum.TextChanged += new System.EventHandler(this.EENum_TextChanged);
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(6, 88);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(134, 18);
+            this.label14.Size = new System.Drawing.Size(62, 18);
             this.label14.TabIndex = 76;
-            this.label14.Text = "写入寄存器值：";
+            this.label14.Text = "编码：";
             // 
             // WritePIN2
             // 
@@ -530,13 +562,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1177, 741);
+            this.ClientSize = new System.Drawing.Size(1153, 678);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.txtReceive);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "F_Main";
             this.Text = "北京七芯中创科技有限公司";
             this.Load += new System.EventHandler(this.F_Main_Load);
@@ -576,7 +608,6 @@
         private System.Windows.Forms.Button PIN4;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button Connect;
-        private System.Windows.Forms.RichTextBox txtReceive;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button ReadPIN2;
@@ -598,6 +629,9 @@
         private System.Windows.Forms.ToolStripStatusLabel tsStopBits;
         private System.Windows.Forms.ToolStripStatusLabel tsParity;
         private System.Windows.Forms.Timer tmSend;
+        private System.Windows.Forms.TextBox EENum2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
     }
 }
 

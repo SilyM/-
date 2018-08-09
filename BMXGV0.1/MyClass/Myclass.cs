@@ -252,7 +252,7 @@ namespace BMXGV0._1.MyClass
 
             for (int i = 0, j = 0; i < IC_Information_data.Length; i += 14, j++)
             {
-                ROMID[j] = Convert.ToString(IC_Information_data[i],16) + Convert.ToString(IC_Information_data[i+1], 16) + Convert.ToString(IC_Information_data[i+2], 16) + Convert.ToString(IC_Information_data[i+3], 16) + Convert.ToString(IC_Information_data[i+4], 16) + Convert.ToString(IC_Information_data[i+5], 16) + Convert.ToString(IC_Information_data[i+6], 16) + Convert.ToString(IC_Information_data[i+7], 16);
+                ROMID[j] = IC_Information_data[i].ToString("x2") + IC_Information_data[i + 1].ToString("x2") + IC_Information_data[i + 2].ToString("x2") + IC_Information_data[i + 3].ToString("x2") + IC_Information_data[i + 4].ToString("x2") + IC_Information_data[i + 5].ToString("x2") + IC_Information_data[i + 6].ToString("x2") + IC_Information_data[i + 7].ToString("x2");
             }
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             for (int a = 8, b = 0; a < IC_Information_data.Length; a += 14, b++)
@@ -269,12 +269,12 @@ namespace BMXGV0._1.MyClass
                 IC_data.CopyTo(0, clc, 0, 16);
                 string lanhao = null;
                 string weizhihao = null;
-                for (int m = 0; m < 11; m++)
+                for (int m = 0; m < 10; m++)
                 {
                     lanhao += clc[m].ToString();
                 }
                 CobleNum[b] = Convert.ToInt32(lanhao, 2).ToString();
-                for (int q = 11; q < 16; q++)
+                for (int q = 10; q < 16; q++)
                 {
                     weizhihao += clc[q].ToString();
                 }
@@ -400,17 +400,18 @@ namespace BMXGV0._1.MyClass
             }
             return encodebyte;
         }
-        public byte[] bitToByteTHTL(TextBox EENum)
+        public byte[] bitToByteTHTL(TextBox EENum,TextBox EENum2)
         {
             string a = EENum.Text;
-            int b;
-            string c;
-            string d;
-            string f;
-
+            string a1 = EENum2.Text;
+            int b,b1;
+            string c,c1,d,f;
+            
+            b1 = Convert.ToInt16(a1);
             b = Convert.ToInt16(a);
             c = Convert.ToString(b, 2);
-            d = c.PadLeft(6, '0');
+            c1 = Convert.ToString(b1, 2);
+            d = c1.PadLeft(6, '0');
             c = c.PadLeft(10, '0');
             f = c + d;
             byte[] encodebyte = new byte[f.Length / 8];
