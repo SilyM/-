@@ -339,11 +339,13 @@ namespace BMXGV0._1.MyClass
 
 
             }
+            int Num = 1;
             for (int ii = 0; ii < ICNum; ii++)
             {
-
+                
                 DataRow r1 = table.NewRow();
 
+                r1["序号"] = Num++;
                 r1["时间"] = DateTime.Now.ToString();
                 r1["ROMID"] = ROMID[ii];
                 r1["缆号"] = CobleNum[ii];
@@ -380,9 +382,9 @@ namespace BMXGV0._1.MyClass
             return encodebyte;
         }
 
-        public byte[] bitToByteTL(TextBox EENum)
+        public byte[] bitToByteTL(TextBox EENum2)
         {
-            string a = EENum.Text;
+            string a = EENum2.Text;
             int b;
             string c;
             string d;

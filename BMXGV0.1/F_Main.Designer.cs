@@ -73,6 +73,9 @@
             this.WritePIN1 = new System.Windows.Forms.Button();
             this.WritePIN3 = new System.Windows.Forms.Button();
             this.tmSend = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -360,11 +363,11 @@
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(542, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(492, 44);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(597, 652);
+            this.dataGridView1.Size = new System.Drawing.Size(778, 619);
             this.dataGridView1.TabIndex = 23;
             // 
             // groupBox4
@@ -428,6 +431,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.button1);
             this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.label2);
             this.groupBox5.Controls.Add(this.EENum2);
@@ -558,11 +562,42 @@
             this.WritePIN3.UseVisualStyleBackColor = true;
             this.WritePIN3.Click += new System.EventHandler(this.WritePIN3_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(492, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(77, 12);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "传感器数量：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(566, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(71, 12);
+            this.label9.TabIndex = 27;
+            this.label9.Text = "           ";
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("宋体", 8F);
+            this.button1.Location = new System.Drawing.Point(21, 171);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 82;
+            this.button1.Text = "检验";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // F_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1153, 678);
+            this.ClientSize = new System.Drawing.Size(1282, 679);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.dataGridView1);
@@ -584,6 +619,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -632,6 +668,9 @@
         private System.Windows.Forms.TextBox EENum2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button1;
     }
 }
 

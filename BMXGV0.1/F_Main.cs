@@ -48,11 +48,12 @@ namespace BMXGV0._1
 
             DataTable table = new DataTable();
 
-            DataColumn c0 = new DataColumn("时间", typeof(string));
-            DataColumn c1 = new DataColumn("ROMID", typeof(string));
-            DataColumn c2 = new DataColumn("缆号", typeof(string));
-            DataColumn c3 = new DataColumn("地址", typeof(string));
-            DataColumn c4 = new DataColumn("温度（℃）", typeof(string));
+            DataColumn c0 = new DataColumn("序号",typeof(string));
+            DataColumn c1 = new DataColumn("时间", typeof(string));
+            DataColumn c2 = new DataColumn("ROMID", typeof(string));
+            DataColumn c3 = new DataColumn("缆号", typeof(string));
+            DataColumn c4 = new DataColumn("地址", typeof(string));
+            DataColumn c5 = new DataColumn("温度（℃）", typeof(string));
 
 
             table.Columns.Add(c0);
@@ -60,7 +61,7 @@ namespace BMXGV0._1
             table.Columns.Add(c2);
             table.Columns.Add(c3);
             table.Columns.Add(c4);
-
+            table.Columns.Add(c5);
 
             if (Sp1.IsOpen)
             {
@@ -97,7 +98,10 @@ namespace BMXGV0._1
                         {
                             if (buffer[11] == 0x00)
                             {
-                                MessageBox.Show("连接成功！");
+                                string y,r;
+                                y = buffer[12].ToString()+"."+buffer[13].ToString();
+                                r = buffer[14].ToString() + "." + buffer[15].ToString();
+                                MessageBox.Show("连接成功！硬件版本号为："+"V"+y+"软件版本号：V"+r);
                             }
                             if (buffer[11] == 0x01)
                             {
@@ -131,6 +135,7 @@ namespace BMXGV0._1
                                 QTNum = (ushort)(QTNum ^ b2);
                                 MessageBox.Show("通道：" + Chnum + "，检查正确，共有QT传感器" + QTNum.ToString() + "颗");
                                 groupBox4.Enabled = true;
+                                label9.Text = QTNum.ToString();
                             }
                             if (buffer[17] == 0x01)
                             {
@@ -180,6 +185,7 @@ namespace BMXGV0._1
                             this.Invoke(new MethodInvoker(() =>
                             {
                                 this.dataGridView1.DataSource = table;
+                                Myclass.Adjust(dataGridView1);
                             }));
                             groupBox5.Enabled = true;
                         }
@@ -288,9 +294,14 @@ namespace BMXGV0._1
             }
         }
 
-                      #region 0x0003
+                       #region 0x0003
         private void PIN1_Click(object sender, EventArgs e) //0x0003
         {
+            DataTable dt = (DataTable)dataGridView1.DataSource;
+
+            dt.Rows.Clear();
+
+            dataGridView1.DataSource = dt;
             MyClass.Myclass Myclass = new MyClass.Myclass();
             byte[] COM1 = new byte[16];
 
@@ -493,7 +504,7 @@ namespace BMXGV0._1
             if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
-                btoB = Myclass.bitToByteTL(EENum);
+                btoB = Myclass.bitToByteTL(EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -546,7 +557,7 @@ namespace BMXGV0._1
             if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
-                btoB = Myclass.bitToByteTL(EENum);
+                btoB = Myclass.bitToByteTL(EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -595,7 +606,7 @@ namespace BMXGV0._1
             if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
-                btoB = Myclass.bitToByteTL(EENum);
+                btoB = Myclass.bitToByteTL(EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
@@ -629,7 +640,7 @@ namespace BMXGV0._1
             byte[] COM3 = new byte[27];
             byte[] btoB = new byte[2];
             COM3[0] = 0x5f; COM3[1] = 0x5f; COM3[2] = 0x00; COM3[3] = 0x15; COM3[4] = 0x00; COM3[5] = 0x01; COM3[6] = 0x10; COM3[7] = 0x01; COM3[8] = 0x00; COM3[9] = 0x00; COM3[10] = 0x07; COM3[11] = 0x04;
-            if (DownMode.Text == "TH")
+            if (DownMode.Text == "电缆号")
             {
                 COM3[12] = 0x01;
 
@@ -639,14 +650,14 @@ namespace BMXGV0._1
 
 
             }
-            if (DownMode.Text == "TL")
+            if (DownMode.Text == "位置号")
             {
                 COM3[12] = 0x02;
-                btoB = Myclass.bitToByteTL(EENum);
+                btoB = Myclass.bitToByteTL(EENum2);
                 COM3[21] = btoB[0];
                 COM3[22] = btoB[1];
             }
-            if (DownMode.Text == "TH及TL")
+            if (DownMode.Text == "电缆号及位置号")
             {
                 COM3[12] = 0x03;
                 btoB = Myclass.bitToByteTHTL(EENum,EENum2);
@@ -786,6 +797,68 @@ namespace BMXGV0._1
             {
                 EENum2.Enabled = true;
                 EENum.Enabled = true;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            int rownum = dataGridView1.Rows.Count;
+            int count=0;
+            
+            if (EENum.Enabled == true&&EENum2.Enabled==false)
+            {
+                for (int i = 0, j = 1; i < rownum - 1; i++,j++)
+                {
+                    if (Convert.ToInt16(EENum.Text).ToString() != dataGridView1.Rows[i].Cells[3].Value.ToString())
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j+"-X!";
+                    }
+                    else
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j;
+                    }
+                }
+                MessageBox.Show("共有" + count + "传感器验证失败");
+                
+            }
+            if (EENum2.Enabled == true && EENum.Enabled==false)
+            {
+                for (int i = 0, j = 1; i < rownum - 1; i++, j++)
+                {
+                    if (Convert.ToInt16(EENum2.Text).ToString() != dataGridView1.Rows[i].Cells[4].Value.ToString())
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j + "-X!";
+                    }
+                    else
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j;
+                    }
+                }
+                MessageBox.Show("共有" + count + "传感器验证失败");
+
+            }
+            if (EENum2.Enabled == true && EENum.Enabled == true)
+            {
+                for (int i = 0, j = 1; i < rownum - 1; i++, j++)
+                {
+                    if (Convert.ToInt16(EENum2.Text).ToString() != dataGridView1.Rows[i].Cells[4].Value.ToString()|| Convert.ToInt16(EENum.Text).ToString() != dataGridView1.Rows[i].Cells[3].Value.ToString())
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j + "-X!";
+                    }
+                    else
+                    {
+                        count++;
+                        dataGridView1.Rows[i].Cells[0].Value = j;
+                    }
+                }
+                MessageBox.Show("共有" + count + "传感器验证失败");
+
             }
         }
     }
