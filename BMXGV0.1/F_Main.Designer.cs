@@ -62,6 +62,7 @@
             this.ReadPIN1 = new System.Windows.Forms.Button();
             this.ReadPIN3 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.EENum2 = new System.Windows.Forms.TextBox();
@@ -75,7 +76,6 @@
             this.tmSend = new System.Windows.Forms.Timer(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -451,6 +451,17 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "3、传感器编码选项";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("宋体", 8F);
+            this.button1.Location = new System.Drawing.Point(21, 171);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 82;
+            this.button1.Text = "检验";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -580,22 +591,11 @@
             this.label9.TabIndex = 27;
             this.label9.Text = "           ";
             // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("宋体", 8F);
-            this.button1.Location = new System.Drawing.Point(21, 171);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 82;
-            this.button1.Text = "检验";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // F_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1282, 679);
+            this.ClientSize = new System.Drawing.Size(1284, 683);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.groupBox5);

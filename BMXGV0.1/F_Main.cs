@@ -44,7 +44,7 @@ namespace BMXGV0._1
 
         void Sp1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Thread.Sleep(300);
+            Thread.Sleep(1500);
 
             DataTable table = new DataTable();
 
@@ -75,12 +75,13 @@ namespace BMXGV0._1
                     Sp1.Read(receivedData, 0, receivedData.Length);
                     buffer.AddRange(receivedData); //buffer those to list
                     Sp1.DiscardInBuffer();
-                    //string strrcv = null;
-
-                    //for (int i = 0; i < receivedData.Length; i++)
-                    //{
-                    //    strrcv += receivedData[i].ToString("x2");
-                    //}
+                    string strrcv = null;
+                    
+                    for (int i = 0; i < receivedData.Length; i++)
+                    {
+                        strrcv += receivedData[i].ToString("x2");
+                    }
+                    Myclass.Save_file(strrcv, DateTime.Now.ToString(), "Com1");
                     //txtReceive.Text += strrcv + "\r\n";
 
                     //if (txtReceive.TextLength > 500)
@@ -188,6 +189,10 @@ namespace BMXGV0._1
                                 Myclass.Adjust(dataGridView1);
                             }));
                             groupBox5.Enabled = true;
+                            for (int i = 0; i < dataGridView1.RowCount; i++)
+                            {
+                                Myclass.Save_file(dataGridView1.Rows[i].Cells[1].Value.ToString() + "  " + dataGridView1.Rows[i].Cells[2].Value.ToString() + "  " + dataGridView1.Rows[i].Cells[3].Value.ToString() + "  " + dataGridView1.Rows[i].Cells[4].Value.ToString() + "  " + dataGridView1.Rows[i].Cells[5].Value.ToString(), DateTime.Now.ToString(), "Check");
+                            }
                         }
                         if (buffer[11] == 0x01)
                         {
@@ -297,94 +302,205 @@ namespace BMXGV0._1
                        #region 0x0003
         private void PIN1_Click(object sender, EventArgs e) //0x0003
         {
-            DataTable dt = (DataTable)dataGridView1.DataSource;
-
-            dt.Rows.Clear();
-
-            dataGridView1.DataSource = dt;
-            MyClass.Myclass Myclass = new MyClass.Myclass();
-            byte[] COM1 = new byte[16];
-
-            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
-            COM1[10] = 0x03; COM1[11] = 0x01;
-            byte[] crc = new byte[8];
-            byte[] crcreturn = new byte[2];
-            for (int i = 4, j = 0; i < 12; i++, j++)
+            if (dataGridView1.DataSource == null)
             {
-                crc[j] = COM1[i];
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x01;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
             }
-            crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM1[12] = crcreturn[1];
-            COM1[13] = crcreturn[0];
-            COM1[14] = 0x55;
-            COM1[15] = 0xAA;
-            Sp1.Write(COM1, 0, COM1.Length);
+            else
+            {
+                DataTable dt = (DataTable)dataGridView1.DataSource;
+                dt.Rows.Clear();
+                dataGridView1.DataSource = dt;
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x01;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
+            }
+           
+            
         }
 
         private void PIN2_Click(object sender, EventArgs e)
         {
-
-            MyClass.Myclass Myclass = new MyClass.Myclass();
-            byte[] COM1 = new byte[16];
-
-            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
-            COM1[10] = 0x03; COM1[11] = 0x02;
-            byte[] crc = new byte[8];
-            byte[] crcreturn = new byte[2];
-            for (int i = 4, j = 0; i < 12; i++, j++)
+            if (dataGridView1.DataSource == null)
             {
-                crc[j] = COM1[i];
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x02;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
             }
-            crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM1[12] = crcreturn[1];
-            COM1[13] = crcreturn[0];
-            COM1[14] = 0x55;
-            COM1[15] = 0xAA;
-            Sp1.Write(COM1, 0, COM1.Length);
+            else
+            {
+                DataTable dt = (DataTable)dataGridView1.DataSource;
+
+                dt.Rows.Clear();
+
+                dataGridView1.DataSource = dt;
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x02;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
+
+            }
+           
+           
         }
 
         private void PIN3_Click(object sender, EventArgs e)
         {
-
-            MyClass.Myclass Myclass = new MyClass.Myclass();
-            byte[] COM1 = new byte[16];
-
-            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
-            COM1[10] = 0x03; COM1[11] = 0x03;
-            byte[] crc = new byte[8];
-            byte[] crcreturn = new byte[2];
-            for (int i = 4, j = 0; i < 12; i++, j++)
+            if (dataGridView1.DataSource == null)
             {
-                crc[j] = COM1[i];
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x03;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
+
             }
-            crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM1[12] = crcreturn[1];
-            COM1[13] = crcreturn[0];
-            COM1[14] = 0x55;
-            COM1[15] = 0xAA;
-            Sp1.Write(COM1, 0, COM1.Length);
+            else
+            {
+ DataTable dt = (DataTable)dataGridView1.DataSource;
+
+            dt.Rows.Clear();
+
+            dataGridView1.DataSource = dt; MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x03;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
+            }
+           
+           
         }
 
         private void PIN4_Click(object sender, EventArgs e)
         {
-
-            MyClass.Myclass Myclass = new MyClass.Myclass();
-            byte[] COM1 = new byte[16];
-
-            COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
-            COM1[10] = 0x03; COM1[11] = 0x04;
-            byte[] crc = new byte[8];
-            byte[] crcreturn = new byte[2];
-            for (int i = 4, j = 0; i < 12; i++, j++)
+            if (dataGridView1.DataSource == null)
             {
-                crc[j] = COM1[i];
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x04;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
             }
-            crcreturn = Myclass.CRC16(crc, crc.Length);
-            COM1[12] = crcreturn[1];
-            COM1[13] = crcreturn[0];
-            COM1[14] = 0x55;
-            COM1[15] = 0xAA;
-            Sp1.Write(COM1, 0, COM1.Length);
+            else
+            {
+ DataTable dt = (DataTable)dataGridView1.DataSource;
+
+            dt.Rows.Clear();
+
+            dataGridView1.DataSource = dt;
+                MyClass.Myclass Myclass = new MyClass.Myclass();
+                byte[] COM1 = new byte[16];
+
+                COM1[0] = 0x5f; COM1[1] = 0x5f; COM1[2] = 0x00; COM1[3] = 0x0A; COM1[4] = 0x00; COM1[5] = 0x01; COM1[6] = 0x10; COM1[7] = 0x01; COM1[8] = 0x00; COM1[9] = 0x00;
+                COM1[10] = 0x03; COM1[11] = 0x04;
+                byte[] crc = new byte[8];
+                byte[] crcreturn = new byte[2];
+                for (int i = 4, j = 0; i < 12; i++, j++)
+                {
+                    crc[j] = COM1[i];
+                }
+                crcreturn = Myclass.CRC16(crc, crc.Length);
+                COM1[12] = crcreturn[1];
+                COM1[13] = crcreturn[0];
+                COM1[14] = 0x55;
+                COM1[15] = 0xAA;
+                Sp1.Write(COM1, 0, COM1.Length);
+            }
+           
+           
         }
         #endregion
 
@@ -814,15 +930,19 @@ namespace BMXGV0._1
                     {
                         count++;
                         dataGridView1.Rows[i].Cells[0].Value = j+"-X!";
+                        
                     }
                     else
                     {
-                        count++;
+                        
                         dataGridView1.Rows[i].Cells[0].Value = j;
+                        
                     }
+                    
                 }
-                MessageBox.Show("共有" + count + "传感器验证失败");
-                
+                MessageBox.Show("共有" + count + "传感器验证失败！");
+
+
             }
             if (EENum2.Enabled == true && EENum.Enabled==false)
             {
@@ -832,14 +952,18 @@ namespace BMXGV0._1
                     {
                         count++;
                         dataGridView1.Rows[i].Cells[0].Value = j + "-X!";
+                        
                     }
                     else
                     {
-                        count++;
+                       
                         dataGridView1.Rows[i].Cells[0].Value = j;
+                        
                     }
+                    
                 }
-                MessageBox.Show("共有" + count + "传感器验证失败");
+                MessageBox.Show("共有" + count + "传感器验证失败！");
+
 
             }
             if (EENum2.Enabled == true && EENum.Enabled == true)
@@ -850,15 +974,17 @@ namespace BMXGV0._1
                     {
                         count++;
                         dataGridView1.Rows[i].Cells[0].Value = j + "-X!";
+                        
                     }
                     else
                     {
-                        count++;
+                       
                         dataGridView1.Rows[i].Cells[0].Value = j;
+                        
                     }
                 }
-                MessageBox.Show("共有" + count + "传感器验证失败");
 
+                MessageBox.Show("共有" + count + "传感器验证失败！");
             }
         }
     }
